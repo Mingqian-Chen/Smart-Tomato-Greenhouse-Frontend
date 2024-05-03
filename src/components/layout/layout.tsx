@@ -14,7 +14,7 @@ import InsertChartIcon from '@mui/icons-material/InsertChart';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import { AppBar, Button, IconButton } from '@mui/material';
 import { match } from 'path-to-regexp';
-import { authClient } from '../../api/authClient';
+// import { authClient } from '../../api/authClient';
 import { To, useNavigate } from 'react-router-dom';
 import logoImage from '../../assets/images/logo.png'
 import { AccountCircle } from '@mui/icons-material';
@@ -36,19 +36,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     }, [window.location.pathname]);
 
     function handleLogout() {
-        authClient.logout().then(()=>{
-            navigate('/auth/signin')
-        })
+        // authClient.logout().then(()=>{
+        //     navigate('/auth/login')
+        // })
+        navigate('/auth/login')
     }
 
     const sideBarProp = [{
         text: 'Overview',
         path: ['/overview', '/'],
         icon: <DashboardIcon />
-    }, {
-        text: 'Search',
-        path: ['/search'],
-        icon: <HomeIcon />
     }, {
         text: 'Real-time Data',
         path: ['/realtime'],
