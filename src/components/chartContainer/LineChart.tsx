@@ -22,6 +22,7 @@ const LineChart = ({ chartId, data }: LineChartProps) => {
     }
 
     const yLabel = chartId.includes('Temperature') ? '℃' : '%';
+    const yMax = chartId.includes('Temperature') ? 60 : 100;
 
     const option = {
       title: {
@@ -45,6 +46,7 @@ const LineChart = ({ chartId, data }: LineChartProps) => {
         left: '3%',
         right: '4%',
         bottom: '3%',
+        max: yMax,
         containLabel: true
       },
       yAxis: {
