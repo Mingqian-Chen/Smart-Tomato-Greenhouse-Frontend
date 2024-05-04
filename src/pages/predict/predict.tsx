@@ -1,9 +1,10 @@
 import Box from '@mui/material/Box';
-import { Grid } from '@mui/material';
+import { Alert, Collapse, Grid, IconButton } from '@mui/material';
 import Layout from '../../components/layout/layout';
 import { useEffect, useState } from 'react';
 import { dataService } from '../../api/dataService';
 import LineChart from '../../components/chartContainer/LineChart';
+import CloseIcon from '@mui/icons-material/Close';
 
 export interface Data {
     humidity: number[];
@@ -13,7 +14,8 @@ export interface Data {
 }
 
 export default function PredictPage() {
-    const [data, setData] = useState<Data>();
+    const [data, setData] = useState<Data | null>(null);
+    const [open, setOpen] = useState(true);
 
     useEffect(() => {
         dataService.getPredictData().then((res: any) => {
@@ -23,8 +25,51 @@ export default function PredictPage() {
         })
     }, []);
 
+
     return (
         <Layout>
+            <Collapse in={data?.status==1}>
+                <Alert
+                    severity="warning"
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                if(data)
+                                    setData({...data,status:0});
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                >
+                    Please be aware of the incoming unusual weather
+                </Alert>
+            </Collapse>
+            <Collapse in={data?.status==2}>
+                <Alert
+                    severity="error"
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                if(data)
+                                    setData({...data,status:0});
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                >
+                    Please be aware of the incoming unusual weather
+                </Alert>
+            </Collapse>
             <Box sx={{ flexGrow: 1 }}>
                 {/* Displaying of components */}
                 <Box
@@ -41,13 +86,13 @@ export default function PredictPage() {
                         <Grid item xs={6}>
                             <LineChart
                                 chartId="Temperature Forecast"
-                                data={{date:data?.time,value:data?.temperature}}
+                                data={{ date: data?.time, value: data?.temperature }}
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <LineChart
                                 chartId="Humidity Forecast"
-                                data={{date:data?.time,value:data?.humidity}}
+                                data={{ date: data?.time, value: data?.humidity }}
                             />
                         </Grid>
                     </Grid>
